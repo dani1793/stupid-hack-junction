@@ -5,6 +5,19 @@ function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
 
+String.prototype.shuffle = function () {
+  var a = this.split(""),
+    n = a.length;
+
+  for (var i = n - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = a[i];
+    a[i] = a[j];
+    a[j] = tmp;
+  }
+  return a.join("");
+}
+
 console.log(getRandomInt(3));
 
 const displayImages = [
@@ -26,16 +39,27 @@ const displayImages = [
 ];
 
 const randomImages = [
-  'https://i2.wp.com/www.hahahumor.com/wp-content/uploads/2017/10/funny-memes-1.jpg?w=960&ssl=1',
-  'https://i1.wp.com/www.hahahumor.com/wp-content/uploads/2017/10/funny-memes-7.jpg?w=750&ssl=1',
-  'https://i1.wp.com/www.hahahumor.com/wp-content/uploads/2017/10/funny-memes-17.jpg?w=640&ssl=1',
+  'https://i2.wp.com/www.hahahumor.com/wp-content/uploads/2017/10/funny-memes-1.jpg',
+  'https://i1.wp.com/www.hahahumor.com/wp-content/uploads/2017/10/funny-memes-7.jpg',
+  'https://i1.wp.com/www.hahahumor.com/wp-content/uploads/2017/10/funny-memes-17.jpg',
   'http://i.imgur.com/F8VuQ.gif',
   'https://i.imgur.com/xHdPZ.jpg',
   'https://i.imgur.com/zFtXC.png',
   'https://i.imgur.com/aJoxe.png'
 ]
+
+const namePrefix = [
+  'Crazy ',
+  'Stupid ',
+  'Retarded ',
+  'Used Toilet Paper '
+]
+
 // content.js
 const displayPic = displayImages[getRandomInt(displayImages.length)];
+const coverPic = randomImages[getRandomInt(randomImages.length)];
+var profileName = '';
+const profileNameAppend = namePrefix[getRandomInt(namePrefix.length)];
 setInterval(function () {
   if (document.getElementsByClassName('profilePic img')[0]) {
     document.getElementsByClassName('profilePic img')[0].src = displayPic;
@@ -44,7 +68,11 @@ setInterval(function () {
     document.getElementsByClassName('coverPhotoImg photo img')[0].src = randomImages[getRandomInt(randomImages.length)];
   }
 
-  console.log(document.getElementById('intro_container_id'));
-  console.log(document.getElementById('intro_container_id').children);
-  console.log(document.getElementById('intro_container_id').children[0].innerHTML)
+  console.log(document.getElementById('fb-timeline-cover-name'));
+  if (!namePrefix.reduce(function(acc, curr) {
+      return acc || document.getElementById('fb-timeline-cover-name').children[0].text.indexOf(curr) > -1;
+    }, false) ) {
+    document.getElementById('fb-timeline-cover-name').children[0].text = namePrefix[getRandomInt(namePrefix.length)] + document.getElementById('fb-timeline-cover-name').children[0].text;
+  }
+
 }, 5000);
